@@ -18,8 +18,6 @@ public class AdminUtility {
 	ArrayList<Customer> customerstore=new ArrayList<Customer>();
 	//search for Admin searches for particular ID
 	String search;
-	public final static String NAME_REGEX="^[a-zA-Z\\s]+$";
-	public final static String ID_REGEX="^\\d*$";
 	
 	//Add the Data of Customer to customerstore
 	public void addCustomerData() throws IOException {
@@ -30,7 +28,7 @@ public class AdminUtility {
 		id=reader.readLine();
 
 		//Validate id 
-		if(id.isEmpty()|| !id.matches(ID_REGEX)) {
+		if(!Validator.isNumber(id)) {
 			System.out.println("ID is not valid!");
 			return;
 		}
@@ -44,7 +42,7 @@ public class AdminUtility {
 		//Validate name
 		System.out.println("Enter Customer Name:");
 		name=reader.readLine();
-		if(name.isEmpty()|| !name.matches(NAME_REGEX)) {
+		if(!Validator.isName(name)) {
 			System.out.println("Name is not valid!");
 			return;
 		}
@@ -56,9 +54,9 @@ public class AdminUtility {
 	public void addCar() throws IOException {
 		System.out.println("Please Enter ID of the Customer:");
 
-		int carID;
+		String carID;
 		String model;
-		double price;
+		String price;
 		String search=reader.readLine();
 		for(Customer cu: customerstore) {
 			//Validate If User's ID exists in customerstore
@@ -66,14 +64,32 @@ public class AdminUtility {
 				
 				System.out.println("Customer Found!\nCustomer ID:"+cu.getCID()+"\nCustomer Name:"+cu.getCName()+"\n");
 				System.out.println("Please Enter Car Details:\nCar ID: ");
-				carID=Integer.parseInt(reader.readLine());
+				carID=reader.readLine();
+				//Validate Car ID
+				if(!Validator.isNumber(carID)) {
+					System.out.println("ID is not valid!");
+					return;
+				}
+				//Validate Unique Car ID
+				for(Customer c: customerstore) {
+					if(c.getCID()==Integer.parseInt(carID)) {														
+						System.out.println("Please enter Unique Car ID");
+						return;
+					}
+				}
 				System.out.println("Model:");
 				model=reader.readLine();
+				
 				System.out.println("Price:");
-				price=Double.parseDouble(reader.readLine());
+				price=reader.readLine();
+				//Validate Price
+				if(!Validator.isNumber(price)) {
+					System.out.println("Price is not valid!");
+					return;
+				}
 				
 				//Add a car
-				cu.addCarToUser(carID,model,price);
+				cu.addCarToUser(Integer.parseInt(carID),model,Double.parseDouble(price));
 				break;
 			}else if(customerstore.size()==0){
 				System.out.println("Customer Not Found!");
@@ -141,6 +157,7 @@ public class AdminUtility {
 			}
 		}
 		System.out.println("Random IDs:"+ln);
+		//RetainAll will choose matched IDs 
 		ln.retainAll(ids);
 		
 		//Store the match ids in set for removing duplicates

@@ -11,9 +11,8 @@ public class Admin extends AdminUtility{
 		//util for accessing AdminUtility class methods
 		AdminUtility util = new AdminUtility();
 		//choice for Admin choice for Operations
-		int choice;
+		String choice;
 		String option;
-		
 		do {
 			System.out.println("Welcome to Car Purchase!\n"
 					+ "1.Add a Customer\n"
@@ -22,9 +21,15 @@ public class Admin extends AdminUtility{
 					+ "4.List all Customers (Sorted by Name)\n"
 					+ "5.Pick a Prize Winner\n"
 					+ "Enter your Choice:");
-			choice=Integer.parseInt(reader.readLine());
+			choice=reader.readLine();
 			
-			switch(choice) {
+			//Check if string is character
+			if(!Validator.isNumber(choice)||choice.isEmpty()) {
+				System.out.println("You should enter a number!Quitting...");
+				return;
+			}
+			
+			switch(Integer.parseInt(choice)) {
 			
 			//Add a customer
 			case 1:
