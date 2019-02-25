@@ -1,17 +1,21 @@
-package com.carpurchaseutility;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import util.AdminUtility;
+import util.Validator;
 public class Admin extends AdminUtility{
 	
 	public static void main(String[] args) throws IOException {
 		//reader for getting Admin's Input 
-		BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
+		final BufferedReader reader=new BufferedReader(new InputStreamReader(System.in));
 		//util for accessing AdminUtility class methods
-		AdminUtility util = new AdminUtility();
+		final AdminUtility util = new AdminUtility();
 		//choice for Admin choice for Operations
 		String choice;
+		//option for check if admin want to choose again
 		String option;
 		do {
 			System.out.println("Welcome to Car Purchase!\n"

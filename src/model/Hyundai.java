@@ -1,4 +1,4 @@
-package com.carpurchaseutility;
+package model;
 
 public class Hyundai extends Car{
 

@@ -1,4 +1,4 @@
-package com.carpurchaseutility;
+package model;
 
 import java.util.ArrayList;
 
@@ -14,20 +14,20 @@ public class Customer{
 	public Customer() {}
 	
 	/*
-	 * @param cid for Customer ID
-	 * @param name for Customer Name
+	 * @param cID for Customer ID
+	 * @param cName for Customer Name
 	 */
-	public Customer(int cid,String name) {
-		cID=cid;
-		cName=name;
+	public Customer(int cID,String cName) {
+		this.cID=cID;
+		this.cName=cName;
 	}
 	
 	//Get Customer ID
-	public int getCID() {
+	public int getCustomerID() {
 		return cID;
 	}
 	//Get Customer Name
-	public String getCName() {
+	public String getCustomerName() {
 		return cName;
 	}
 	//Show the List of Purchased Cars
@@ -37,7 +37,7 @@ public class Customer{
 	//Show Info of particular customer
 	public void showInfo() {
 		System.out.println("===============");
-		System.out.println("ID:"+this.cID+"\nName:"+this.getCName()+"\n----------");
+		System.out.println("ID:"+this.cID+"\nName:"+this.getCustomerName()+"\n----------");
 		if (cars.size()==0) {
 			System.out.println("Cars: No Cars Owned");
 		}else {
@@ -48,7 +48,13 @@ public class Customer{
 		}
 		System.out.println("===============");
 	}
+	
 	//Add a Car to Customer's Car List
+	/*
+	 * @param cid as Car ID
+	 * @param model as Car Model
+	 * @param price as Car Price
+	 */
 	public void addCarToUser(int cid,String model,double price) {
 		final Car car;
 		//Check the Model of Car 

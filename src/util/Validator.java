@@ -1,4 +1,8 @@
-package com.carpurchaseutility;
+package util;
+
+import java.util.List;
+
+import model.Customer;
 
 public class Validator {
 	
@@ -10,23 +14,38 @@ public class Validator {
 	 * @return True if String has valid number
 	 * @return False if String has not valid numbers
 	 */
-	static boolean isNumber(String id) {
+	public final static boolean isNumber(String id) {
 		if(id.isEmpty()|| !id.matches(ID_REGEX)) {
 			return false;
 		}else {
 			return true;
 		}
 	}
+	
 	/*
 	 * @return True if String has valid Name
 	 * @return False if String has not valid Name
 	 */
-	static boolean isName(String name) {
+	public final static boolean isName(String name) {
 		if(name.isEmpty()||!name.matches(NAME_REGEX)) {
 			return false;
 		}
 		else {
 			return true;
 		}
+	}
+	
+	/*
+	 * @return True if String has unique Id
+	 * @return False if String has not unique Id
+	 */
+	public final static boolean isUniqueId(List<Customer> customerstore,String id) {
+		for(Customer c: customerstore) {
+			if(c.getCustomerID()==Integer.parseInt(id)) {														
+				return false;
+			}
+		}
+		return true;
+		
 	}
 }

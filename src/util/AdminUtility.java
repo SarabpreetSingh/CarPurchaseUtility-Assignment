@@ -1,14 +1,12 @@
-package com.carpurchaseutility;
+package util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import comparator.CompareByName;
+import model.Customer;
 
 public class AdminUtility {
 	
@@ -27,25 +25,38 @@ public class AdminUtility {
 		System.out.println("Enter Customer ID:");
 		id=reader.readLine();
 
-		//Validate id 
+		//Validate Customer ID
+		/*
+		 * @param id as Customer ID  
+		 */
 		if(!Validator.isNumber(id)) {
 			System.out.println("ID is not valid!");
 			return;
 		}
+		
 		//Validate Unique ID
-		for(Customer c: customerstore) {
-			if(c.getCID()==Integer.parseInt(id)) {														
-				System.out.println("Please enter Unique ID");
-				return;
-			}
+		/*
+		 * @param customerstore as Customer List
+		 * @param id as Admin's Entered ID
+		 */
+		if(!Validator.isUniqueId(customerstore, id)) {
+			System.out.println("Please enter Unique ID");
+			return;
 		}
-		//Validate name
+		
 		System.out.println("Enter Customer Name:");
 		name=reader.readLine();
+		
+		//Validate Customer Name
+		/*
+		 * @param name as Customer Name
+		 */
 		if(!Validator.isName(name)) {
 			System.out.println("Name is not valid!");
 			return;
 		}
+		
+		//Add Customer to Customer's List
 		customerstore.add(new Customer(Integer.parseInt(id),name));
 		System.out.println("Customer Added Successfully!");
 	}
@@ -57,32 +68,46 @@ public class AdminUtility {
 		String carID;
 		String model;
 		String price;
+		
 		String search=reader.readLine();
+		
 		for(Customer cu: customerstore) {
 			//Validate If User's ID exists in customerstore
-			if(Integer.toString(cu.getCID()).contains(search)) {
+			if(Integer.toString(cu.getCustomerID()).contains(search)) {
 				
-				System.out.println("Customer Found!\nCustomer ID:"+cu.getCID()+"\nCustomer Name:"+cu.getCName()+"\n");
+				System.out.println("Customer Found!\nCustomer ID:"+cu.getCustomerID()+"\nCustomer Name:"+cu.getCustomerName()+"\n");
 				System.out.println("Please Enter Car Details:\nCar ID: ");
 				carID=reader.readLine();
+				
 				//Validate Car ID
+				/*
+				 * @param carID as Car ID
+				 */
 				if(!Validator.isNumber(carID)) {
 					System.out.println("ID is not valid!");
 					return;
 				}
-				//Validate Unique Car ID
-				for(Customer c: customerstore) {
-					if(c.getCID()==Integer.parseInt(carID)) {														
-						System.out.println("Please enter Unique Car ID");
-						return;
-					}
+				
+				//Validate Unique ID
+				/*
+				 * @param customerstore as Customer List
+				 * @param carID as Admin's Entered Car ID
+				 */
+				if(!Validator.isUniqueId(customerstore,carID)) {
+					System.out.println("Please enter Unique Car ID");
+					return;
 				}
+				
 				System.out.println("Model:");
 				model=reader.readLine();
 				
 				System.out.println("Price:");
 				price=reader.readLine();
+				
 				//Validate Price
+				/*
+				 * @param price as Car Price
+				 */
 				if(!Validator.isNumber(price)) {
 					System.out.println("Price is not valid!");
 					return;
@@ -100,18 +125,16 @@ public class AdminUtility {
 	//List a customer based on their ID
 	public void listCustomer() throws IOException {
 		System.out.println("Enter ID of the Customer for Search:");
+		
 		//check for checking Customer exists or Not
-		int check=0;
 		String search=reader.readLine();
 		for(Customer cu: customerstore) {
-			if(Integer.toString(cu.getCID()).contains(search)) {
-				System.out.println("Customer Exists:\n"+cu.getCID()+"-"+cu.getCName());
-				break;
-			}else if(customerstore.size()==check){
-				System.out.println("Customer Not Found!");
+			if(Integer.toString(cu.getCustomerID()).contains(search)) {
+				System.out.println("Customer Exists:\n"+cu.getCustomerID()+"-"+cu.getCustomerName());
+				return;
 			}
-			check++;
 		}
+		System.out.println("Customer Not Found!");
 	}
 	
 	//List all Customers in Sorted Order By Name along with their Cars
@@ -124,54 +147,12 @@ public class AdminUtility {
 		}
 	}
 	
+	//Random Prize Generator
 	public void prizeGenerator() throws IOException {
-		System.out.println(customerstore);
-		System.out.println("Here are the rules:\nPick 3 ids from below:");
-		System.out.println("======");
-		//Access the ids from customerstore List
-		for(Customer c:customerstore) {
-			System.out.println(c.getCID());
-		}
-		System.out.println("======");
-		
-		System.out.println("Enter 3 ids:");
-		
-		//Storing the entered id to array list:
-		ArrayList<Integer> ids=new ArrayList<Integer>();
-		for(int i=0;i<3;i++) {
-			ids.add(Integer.parseInt(reader.readLine()));
-		}
-		System.out.println("Choosed IDs:"+ids);
-		//ln for storing Random Values in a List
-		List<Integer> ln=new ArrayList<Integer>();
-		
-		//Validate if the customer ids < 6
-		if(customerstore.size()<6) {
-			System.out.println("Must have atleast 6 IDs of Customer!");
-			return;
-		}else {
-			Random rn=new Random();
-			for(int i=0;i<6;i++) {
-				int no=rn.nextInt(6);
-				ln.add(customerstore.get(no).getCID());
-			}
-		}
-		System.out.println("Random IDs:"+ln);
-		//RetainAll will choose matched IDs 
-		ln.retainAll(ids);
-		
-		//Store the match ids in set for removing duplicates
-		Set<Integer> set = new HashSet<>(ln);
-		ln.addAll(set);
-		
-		//Validate who won the prize and who didn't
-		if(set.isEmpty()) {
-			System.out.println("No one won the prize!");
-		}
-		else {
-			for(int i:set) {
-			System.out.println("User with ID "+i+" won the prize!");
-			}
-		}
+		/*
+		 * @param customerstore as Customer List
+		 */
+		PrizeGenerator.prizeGenerator(customerstore);
 	}
+	
 }
